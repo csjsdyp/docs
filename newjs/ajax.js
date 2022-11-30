@@ -24,7 +24,7 @@ function ajax(options) {
     //连接 和 发送 - 第二步
     if (options.type == "GET") {
         // xhr.open("GET", options.url + "?" + params, true);
-        xhr.open("GET", options.url, true);
+        xhr.open("GET", options.url+'?v='+Math.random(), true);
         xhr.send(null);
     } else if (options.type == "POST") {
         xhr.open("POST", options.url, true);

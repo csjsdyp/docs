@@ -43,7 +43,7 @@ body {
   border-radius: 50%;
 }
 .flexible .bar {
-  width: 1px;
+  width: 10px;
   height: 100%;
   position: absolute;
   right: 0;

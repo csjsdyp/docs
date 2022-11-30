@@ -1,56 +1,64 @@
 let router = new Router()
-// ajax({
-//     url: "./TestXHR.aspx",             //请求地址
-//     type: "POST",                       //请求方式
-//     data: { name: "super", age: 20 },        //请求参数
-//     dataType: "json",
-//     success: function (response, xml) {
-//         // 此处放成功后执行的代码
-//     },
-//     fail: function (status) {
-//         // 此处放失败后执行的代码
-//     }
-// });
-function create(url,js) {
-    this.success = success
+
+function create(url,callback) {
+    this.success = callback
     this.fail = fail
-    js=js || ''
     ajax({
         url: url,
         type: "GET",
         success: this.success,
         fail: this.fail
     })
-    function success(res, xml) {
-        // alert('vectiry')
-        document.getElementById('app').innerHTML = res
-        if(js){
-            window.loadjs(js)
-        }
-        
-    }
+    // function success(res, xml) {
+    //     // alert('vectiry')
+    //     document.getElementById(ele).innerHTML = res
+    //     if (js) {
+    //         window.loadjs(js)
+    //     }
+
+    // }
     function fail() {
         alert('后台有误，获取数据失败')
     }
-    loadjs=(e)=>{
-        // alert('vectiry')
-        for(i=0;i<e.length;i++){
-            var domScript = document.createElement('script');
-            domScript.src=e[i]
-            var first = document.getElementsByTagName('script');
-            var here = first[first.length - 1];
-            here.parentNode.appendChild(domScript);
-            console.log(e[i],'已被加载')
-        }
-        
-    }
-}
-router.add([
-    { path: '', render: () => create('./view/home.html') },
-    { path: '#/', render: () => create('./view/home.html') },
-    { path: '#/home', render: () => create('./view/home.html') },
-    { path: '#/code', render: () => create('./view/code.html',['./newjs/function.js']) },
-    { path: '#/English', render: () => create('./view/English.html',['./newjs/function.js']) }
-])
+    // loadjs = (e) => {
+    //     // alert('vectiry')
+    //     for (i = 0; i < e.length; i++) {
+    //         var domScript = document.createElement('script');
+    //         domScript.src = e[i]
+    //         var first = document.getElementsByTagName('script');
+    //         var here = first[first.length - 1];
+    //         here.parentNode.appendChild(domScript);
+    //         console.log(e[i], '已被加载')
+    //     }
 
-router.listen()
+    // }
+}
+// 为字符串创建format方法，用于字符串格式化
+String.prototype.format = function (args) {
+    return this.replace(/\{(\w+)\}/g, function (s, i) {
+        return args[i];
+    });
+};
+
+create('./view/lib.json', (res,xml) => {
+    var arr = JSON.parse(res)
+    type = arr.type
+    content = arr.content
+    html = '<h3>csj的代码库</h3>\n<ul>'
+    for (i = 0; i < content.length; i++) {
+        item = content[i]
+        html += '<li><a href="{0}">{1}</a></li>'.format([item.path, item.name])
+    }
+    html += '</ul>'
+    document.getElementById('lib').innerHTML = html
+})
+
+
+router.add([
+    // { path: '', render: () => create('./view/index.html',[],'app') },
+    // { path: '#/', render: () => create('./view/home.html',[],'app') },
+    { path: '#/home', render: () => create('./view/home.html',[],'app') },
+    { path: '#/code', render: () => create('./view/code.html',['./newjs/function.js'],'app') },
+    { path: '#/English', render: () => create('./view/English.json')}
+])
+// router.listen()
