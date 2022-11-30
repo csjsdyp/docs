@@ -1,6 +1,7 @@
 class Router {
     constructor() {
         this.routers = []  //存放我们的路由配置
+        this.hashbefore=location.hash
     }
     add(route, callback) {
         this.routers.push({
@@ -16,7 +17,9 @@ class Router {
         let self = this
         return function () {
             let hash = location.hash
-            console.log(hash)
+            hash =decodeURI(hash)
+            console.log('路由变化',self.hashbefore,'=>',hash)
+            self.hashbefore=hash
             for (let i = 0; i < self.routers.length; i++) {
                 let route = self.routers[i]
                 if (hash === route.path) {
@@ -28,23 +31,3 @@ class Router {
     }
 
 }
-let router = new Router()
-
-router.add('#index', () => {
-    return '<h1>这是首页内容</h1>'
-})
-router.add('#/index', () => {
-    return '<h1>这是首页内容2</h1>'
-})
-router.add('#news', () => {
-    return '<h1>这是新闻内容</h1>'
-})
-
-router.add('#user', () => {
-    return '<h1>这是个人中心内容</h1>'
-})
-
-router.listen((renderHtml) => {
-    let app = document.getElementById('app')
-    app.innerHTML = renderHtml
-})

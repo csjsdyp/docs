@@ -37,7 +37,6 @@ function md(file) {
             txts = xhr.response
             document.getElementsByClassName('content')[0].innerHTML =
             marked.parse(txts);
-
         }
     }
 }
@@ -54,3 +53,5 @@ function reader() {
     new md(e).load()
 }
 window.addEventListener('hashchange', reader)
+
+
