@@ -6,115 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的文件索引</title>
-    <style>
-        * {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        #main {
-            width: 80%;
-            margin: 0px auto;
-            margin-top: 5%;
-        }
-
-        h3 {
-            text-align: center;
-        }
-
-        a {
-            text-decoration: none;
-            color: #999;
-        }
-
-        #mylist {
-            list-style: none;
-            margin: 10px;
-            border: 1px solid #ddd;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .list-a {
-            display: block;
-            height: 32px;
-            line-height: 32px;
-            padding-left: 10px;
-            border-top: 1px solid #e3e3e3;
-            background: #f4f4f4;
-            cursor: pointer;
-            font-family: 'Microsoft YaHei';
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .list-a ul {
-            list-style: none;
-        }
-
-        .sub {
-            list-style: none;
-            padding: 8px 0px;
-            color: #999;
-            /* position: absolute; */
-            transition-duration: 1s;
-
-        }
-
-        .sub li {
-            height: 30px;
-            line-height: 30px;
-            list-style: none;
-
-            /* padding-left: 10px; */
-        }
-
-        .sub li a {
-            display: block;
-            width: 100%;
-            height: 100%;
-            font-family: 'Microsoft YaHei';
-            font-size: 14px;
-            color: #333;
-            text-decoration: none;
-            padding: 0 25px;
-            box-sizing: border-box;
-
-        }
-
-        .sub li a:hover {
-            background: #eee;
-        }
-
-        #out {
-            position: fixed;
-            top: 0;
-            left: 0;
-            /* background: rgba(0, 0, 0, 0.7); */
-            z-index: 9;
-            width: 100%;
-            height: 100%;
-            display: none;
-        }
-
-        #inn {
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-        }
-
-        /* .sideMenu ul .nLi.on .sub {
-        display: block;
-    } */
-    </style>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/content.css">
 </head>
-
 <body>
     <div id="main">
         <h3>我的文件索引</h3>
@@ -122,109 +16,14 @@
         <div id="out">
             <div id="inn">
                 <div id="menu-icon"></div>
-                <div id="app">
+                <div id="app" class="content markdown-section">
                 </div>
             </div>
-            <!-- <img src="./static/img/icon_txt.svg" alt=""> -->
         </div>
     </div>
     </div>
 </body>
-<script src="./newjs/ajax.js"></script>
-<script src="./newjs/marked.min.js"></script>
-<!-- <script src="./"></script> -->
-<script>
-    function create(url, callback, key) {
-        this.success = callback
-        this.fail = fail
-        if (sessionStorage.getItem(key) != null) {
-            this.success(sessionStorage.getItem(key))
-        } else {
-            ajax({
-                url: url,
-                type: "GET",
-                success: this.success,
-                fail: this.fail
-            })
-        }
-        function fail() {
-            alert('后台有误，获取数据失败')
-        }
-    }
-    function getlist(res) {
-        sessionStorage.setItem('list', res)
-        var item = JSON.parse(res)
-        list = document.getElementById('mylist')
-        for (i = 0; i < item.length; i++) {
-            li = document.createElement('li')
-            a = document.createElement('a')
-            a.innerText = item[i].note
-            li.id = "list" + item[i].id
-            a.className = "list-a"
-            a.id = "link" + item[i].id
-            a.setAttribute("onclick", 'abc(this.id)')
-            // a.addEventListener('click', abc())
-            // a.attachEvent('onclick','abc')
-            li.appendChild(a)
-            list.appendChild(li)
-            create('./view/' + item[i].filename, getul, item[i].filename)
-        }
-    }
-    function getul(res) {
-        var item = JSON.parse(res)
-        id = 'list' + item.id
-        sessionStorage.setItem(id, res)
-        li = document.getElementById(id)
-        item1 = item.children
-        ul = document.createElement('ul')
-        ul.style = 'display:none;'
-        ul.className = 'sub'
-        ul.id = 'ul' + item.id
-        li.appendChild(ul)
-        for (i = 0; i < item1.length; i++) {
-            li = document.createElement('li')
-            a = document.createElement('a')
-            li.appendChild(a)
-            a.href = '#' + item1[i].path + '/' + item1[i].filename
-            a.innerText = item1[i].innerText
-            ul.appendChild(li)
-        }
-    }
-    function abc(e) {
-        t = document.getElementById('ul' + e.slice(-1))
-        if (t.style.display == 'none') {
-            t.style = 'display:block;'
-        } else {
-            t.style = 'display:none;'
-        }
-
-    }
-    create('./view/index.json', getlist, 'list')
-    hashold = null
-    out = document.getElementById('out')
-    function getmd(res) {
-        z = marked.parse(res);
-        out.style.display = 'block'
-        document.getElementById('app').innerHTML = z
-        cls = document.getElementById('menu-icon')
-        cls.addEventListener('click', function () {
-            out.style.display = 'none'
-            location.hash = ''
-        })
-    }
-
-    function hashchange() {
-        hash = location.hash
-        hash = decodeURI(hash)
-        console.log('路由变化', hashold, '=>', hash)
-        path = hash.replace(/^(#\/|#)/g, '')
-        console.log(path)
-        if (path) { create('./docs/' + path, getmd) }
-        // 根据路由加载相应md
-        hashold = hash
-    }
-    hashchange()
-    window.onhashchange = hashchange
-</script>
-
+<script src="./js/ajax.js"></script>
+<script src="./js/marked.min.js"></script>
+<script src="./js/function.js"></script>
 </html>
