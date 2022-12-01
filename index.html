@@ -2,38 +2,82 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="./css/style.css?v=1.1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的文件索引</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #main {
+            width: 80%;
+            margin: 0px auto;
+            margin-top: 20%;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        #mylist {
+            list-style: none;
+            margin: 10px;
+            /* padding: 10px 30px; */
+            border: 1px solid #ddd;
+        }
+        li {
+            height: 32px;
+            line-height: 32px;
+            padding-left: 10px;
+            border-top: 1px solid #e3e3e3;
+            background: #f4f4f4;
+            cursor: pointer;
+            font-family: 'Microsoft YaHei';
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 手机版 
-  模式一 显示文件库 
-  模式二20%icon 80%文件列表 
-  模式三100%文件内容 button返回按钮
-  电脑版
-  三块内容 一个button（三模式） 左中右 -->
-  <div id="main">
-    <div id="lib" title="文件库"></div>
-    <div id="list" title="文件列表"></div>
-    <div id="app" title="文件内容"></div>
-  </div>
-    <button onclick="view()">视图按钮</button>
-</body>
+    <div id="main">
+        <h3>我的文件索引</h3>
+        <ul id="mylist"></ul>
+    </div>
 
+</body>
 <script src="./newjs/ajax.js"></script>
-<script src="./newjs/router.js"></script>
-<script src="./newjs/function.js"></script>
-<!-- <script type="text/javascript" src="./js/jquery.min.js"></script> -->
-<!-- <script src="./js/jquery.min.js"></script> -->
 <script>
-  function IsPhone(){
-    var screen_width = window.screen.width;
-  }
-  IsPhone()
-// sessionStorage.getItem()
+    function create(url, callback) {
+        this.success = callback
+        this.fail = fail
+        ajax({
+            url: url,
+            type: "GET",
+            success: this.success,
+            fail: this.fail
+        })
+        function fail() {
+            alert('后台有误，获取数据失败')
+        }
+    }
+    function getlist(res) {
+        var item = JSON.parse(res)
+        list = document.getElementById('mylist')
+        for (i = 0; i < item.length; i++) {
+            li = document.createElement('li')
+            a = document.createElement('a')
+            a.innerText = item[i].note
+            li.appendChild(a)
+            list.appendChild(li)
+        }
+    }
+    create('./view/index.json', getlist)
+
 </script>
+
 </html>

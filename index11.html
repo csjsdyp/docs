@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/style.css?v=1.1">
+</head>
+
+<body>
+  <!-- 手机版 
+  模式一 显示文件库 
+  模式二20%icon 80%文件列表 
+  模式三100%文件内容 button返回按钮
+  电脑版
+  三块内容 一个button（三模式） 左中右 -->
+  <div id="main">
+    <div id="lib" title="文件库"></div>
+    <div id="list" title="文件列表"></div>
+    <!-- <div id="app" title="文件内容"></div> -->
+  </div>
+    <button onclick="view()">视图按钮</button>
+</body>
+
+<script src="./newjs/ajax.js"></script>
+<script src="./newjs/router.js"></script>
+<script src="./newjs/function.js"></script>
+<script>
+  function IsPhone(){
+    var screen_width = window.screen.width;
+  }
+  IsPhone()
+// sessionStorage.getItem()
+</script>
+</html>
