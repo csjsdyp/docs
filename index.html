@@ -22,14 +22,19 @@
             text-align: center;
         }
 
+        a {
+            text-decoration: none;
+            color: #999;
+        }
+
         #mylist {
             list-style: none;
             margin: 10px;
-            /* padding: 10px 30px; */
             border: 1px solid #ddd;
         }
 
-        li {
+        .list-a {
+            display: block;
             height: 32px;
             line-height: 32px;
             padding-left: 10px;
@@ -41,6 +46,56 @@
             font-weight: bold;
             color: #333;
         }
+
+        .list-a ul {
+            list-style: none;
+        }
+
+        .sub {
+            list-style: none;
+            padding: 8px 0px;
+            color: #999;
+            /* position: absolute; */
+            transition-duration: 1s;
+
+        }
+
+        .sub li {
+            height: 30px;
+            line-height: 30px;
+            list-style: none;
+
+            /* padding-left: 10px; */
+        }
+
+        .sub li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            font-family: 'Microsoft YaHei';
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            padding: 0 25px;
+            box-sizing: border-box;
+
+        }
+
+        .sub li a:hover {
+            background: #eee;
+        }
+        #out{
+            position: fixed;
+            top:0px;
+            left:0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            display: none;
+        }
+        /* .sideMenu ul .nLi.on .sub {
+        display: block;
+    } */
     </style>
 </head>
 
@@ -48,14 +103,16 @@
     <div id="main">
         <h3>我的文件索引</h3>
         <ul id="mylist"></ul>
+        <div id="out">123</div>
     </div>
 </body>
 <script src="./newjs/ajax.js"></script>
+<!-- <script src="./"></script> -->
 <script>
-    function create(url, callback,key) {
+    function create(url, callback, key) {
         this.success = callback
         this.fail = fail
-        if (sessionStorage.getItem(key)!=null) {
+        if (sessionStorage.getItem(key) != null) {
             this.success(sessionStorage.getItem(key))
         } else {
             ajax({
@@ -70,22 +127,55 @@
         }
     }
     function getlist(res) {
-        sessionStorage.setItem('', res)
+        sessionStorage.setItem('list', res)
         var item = JSON.parse(res)
         list = document.getElementById('mylist')
         for (i = 0; i < item.length; i++) {
             li = document.createElement('li')
             a = document.createElement('a')
             a.innerText = item[i].note
-            a.addEventListener('click', abc)
+            li.id = "list" + item[i].id
+            a.className = "list-a"
+            a.id = "link" + item[i].id
+            a.setAttribute("onclick", 'abc(this.id)')
+            // a.addEventListener('click', abc())
+            // a.attachEvent('onclick','abc')
             li.appendChild(a)
             list.appendChild(li)
+            create('./view/' + item[i].filename, getul, item[i].filename)
         }
     }
-    function abc() {
-        console.log('123')
+    function getul(res) {
+        var item = JSON.parse(res)
+        id = 'list' + item.id
+        sessionStorage.setItem(id, res)
+        li = document.getElementById(id)
+        item1 = item.children
+        ul = document.createElement('ul')
+        ul.style = 'display:none;'
+        ul.className = 'sub'
+        ul.id = 'ul' + item.id
+        li.appendChild(ul)
+        for (i = 0; i < item1.length; i++) {
+            li = document.createElement('li')
+            a = document.createElement('a')
+            li.appendChild(a)
+            a.href = '#'+item1[i].path + item1[i].filename
+            a.innerText = item1[i].innerText
+            ul.appendChild(li)
+            console.log(item1[i])
+        }
     }
-    create('./view/index.json', getlist,'list')
+    function abc(e) {
+        t = document.getElementById('ul' + e.slice(-1))
+        if(t.style.display=='none'){
+            t.style = 'display:block;'
+        }else{
+            t.style = 'display:none;'
+        }
+        
+    }
+    create('./view/index.json', getlist, 'list')
 
 </script>
 

@@ -1,14 +1,17 @@
-[
-    {
-        "path": "/C语言1",
-        "filename": "C语言1的文件1.md",
-        "innerText": "C语言1的文件1",
-        "time": ""
-    },
-    {
-        "path": "/C语言2",
-        "filename": "C语言2的文件1.md",
-        "innerText": "C语言2的文件2"
-        
-    }
-]
+{
+    "id": 2,
+    "time":"",
+    "children": [
+        {
+            "path": "/C语言1",
+            "filename": "C语言1的文件1.md",
+            "innerText": "C语言1的文件1",
+            "time": ""
+        },
+        {
+            "path": "/C语言2",
+            "filename": "C语言2的文件1.md",
+            "innerText": "C语言2的文件2"
+        }
+    ]
+}
