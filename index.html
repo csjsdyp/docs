@@ -61,7 +61,7 @@
       list_li_a = document.createElement('a')
 
       list_li_a.innerText = item[i].innerText
-      list_li_a.href = '#' + item[i].path + '/' + item[i].filename
+      list_li_a.href = '#' + item[i].path + '/' + decodeURI(item[i].filename)
       list_li.appendChild(list_li_a)
       list_ul.appendChild(list_li)
     }

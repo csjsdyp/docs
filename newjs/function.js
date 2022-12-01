@@ -35,23 +35,3 @@ String.prototype.format = function (args) {
         return args[i];
     });
 };
-function lib(res,xml) {
-    var arr = JSON.parse(res)
-    html=createhtml(arr)
-    document.getElementById('lib').innerHTML = html
-}
-
-function createhtml(arr){
-    type = arr.type
-    content = arr.content
-    html = '<h3><a href="./">csj的文件库</a></h3>\n<ul>'
-    for (let i = 0; i < content.length; i++) {
-        item = content[i]
-        html += '<li><a id="{2}" href="{0}">{1}</a></li>'.format([item.path, item.name,item.filename])
-        // let filename=eval('()=> create("./view/{0}{1}",list)'.format([item.filename,type]))
-        // let rou={'path':item.path,'render':filename}
-        // router.push(rou)
-    }
-    html += '</ul>'
-    return html
-}
