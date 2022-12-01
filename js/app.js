@@ -1,75 +1,91 @@
-let router = new Router()
-
-function create(url,callback) {
+function create(url, callback, key) {
     this.success = callback
     this.fail = fail
-    ajax({
-        url: url,
-        type: "GET",
-        success: this.success,
-        fail: this.fail
-    })
-    // function success(res, xml) {
-    //     // alert('vectiry')
-    //     document.getElementById(ele).innerHTML = res
-    //     if (js) {
-    //         window.loadjs(js)
-    //     }
-
-    // }
+    if (sessionStorage.getItem(key) != null) {
+        this.success(sessionStorage.getItem(key))
+    } else {
+        ajax({
+            url: url,
+            type: "GET",
+            success: this.success,
+            fail: this.fail
+        })
+    }
     function fail() {
         alert('后台有误，获取数据失败')
     }
-    // loadjs = (e) => {
-    //     // alert('vectiry')
-    //     for (i = 0; i < e.length; i++) {
-    //         var domScript = document.createElement('script');
-    //         domScript.src = e[i]
-    //         var first = document.getElementsByTagName('script');
-    //         var here = first[first.length - 1];
-    //         here.parentNode.appendChild(domScript);
-    //         console.log(e[i], '已被加载')
-    //     }
-
-    // }
-}
-// 为字符串创建format方法，用于字符串格式化
-String.prototype.format = function (args) {
-    return this.replace(/\{(\w+)\}/g, function (s, i) {
-        return args[i];
-    });
-};
-
-function lib(res,xml) {
-    var arr = JSON.parse(res)
-    type = arr.type
-    content = arr.content
-    html = '<h3><a href="./">csj的文件库</a></h3>\n<ul>'
-    for (let i = 0; i < content.length; i++) {
-        item = content[i]
-        html += '<li><a id="{2}" href="{0}">{1}</a></li>'.format([item.path, item.name,item.filename])
-        let filename=eval('()=> create("./view/{0}{1}",list)'.format([item.filename,type]))
-        let rou={'path':item.path,'render':filename}
-        router.push(rou)
+  }
+  function getlist(res) {
+    sessionStorage.setItem('list', res)
+    var item = JSON.parse(res)
+    list = document.getElementById('mylist')
+    for (i = 0; i < item.length; i++) {
+        li = document.createElement('li')
+        a = document.createElement('a')
+        a.innerText = item[i].note
+        li.id = "list" + item[i].id
+        a.className = "list-a"
+        a.id = "link" + item[i].id
+        a.setAttribute("onclick", 'abc(this.id)')
+        // a.addEventListener('click', abc())
+        // a.attachEvent('onclick','abc')
+        li.appendChild(a)
+        list.appendChild(li)
+        create('./view/' + item[i].filename, getul, item[i].filename)
     }
-    html += '</ul>'
-    document.getElementById('lib').innerHTML = html
-}
-function list(res,xml){
-    var arr = JSON.parse(res)
-    path = arr.path
-    content = arr.content
-    html = '<ul>'
-    for (i = 0; i < content.length; i++) {
-        item = content[i]
-        html += '<li><a href="{0}{1}">{2}</a></li>'.format([path,item.path, item.name])
+  }
+  function getul(res) {
+    var item = JSON.parse(res)
+    id = 'list' + item.id
+    sessionStorage.setItem(id, res)
+    li = document.getElementById(id)
+    item1 = item.children
+    ul = document.createElement('ul')
+    ul.style = 'display:none;'
+    ul.className = 'sub'
+    ul.id = 'ul' + item.id
+    li.appendChild(ul)
+    for (i = 0; i < item1.length; i++) {
+        li = document.createElement('li')
+        a = document.createElement('a')
+        li.appendChild(a)
+        a.href = '#' + item1[i].path + '/' + item1[i].filename
+        a.innerText = item1[i].innerText
+        ul.appendChild(li)
     }
-    html += '</ul>'
-    document.getElementById('list').innerHTML = html
-}
-// create('./view/lib.json', lib)
-// router.add([
-//     { path: '', render: () =>create('./view/lib.json', lib)}
-// ])
-// console.log(router.routers)
-// router.listen()
+  }
+  function abc(e) {
+    t = document.getElementById('ul' + e.slice(-1))
+    if (t.style.display == 'none') {
+        t.style = 'display:block;'
+    } else {
+        t.style = 'display:none;'
+    }
+  
+  }
+  create('./view/index.json', getlist, 'list')
+  hashold = null
+  out = document.getElementById('out')
+  function getmd(res) {
+    z = marked.parse(res);
+    out.style.display = 'block'
+    document.getElementById('app').innerHTML = z
+    cls = document.getElementById('menu-icon')
+    cls.addEventListener('click', function () {
+        out.style.display = 'none'
+        location.hash = ''
+    })
+  }
+  
+  function hashchange() {
+    hash = location.hash
+    hash = decodeURI(hash)
+    console.log('路由变化', hashold, '=>', hash)
+    path = hash.replace(/^(#\/|#)/g, '')
+    console.log(path)
+    if (path) { create('./docs/' + path, getmd) }
+    // 根据路由加载相应md
+    hashold = hash
+  }
+  hashchange()
+  window.onhashchange = hashchange
