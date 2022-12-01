@@ -31,6 +31,10 @@
             list-style: none;
             margin: 10px;
             border: 1px solid #ddd;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .list-a {
@@ -84,29 +88,50 @@
         .sub li a:hover {
             background: #eee;
         }
-        #out{
+
+        #out {
             position: fixed;
-            top:0px;
-            left:0;
+            top: 0;
+            left: 0;
+            /* background: rgba(0, 0, 0, 0.7); */
+            z-index: 9;
             width: 100%;
             height: 100%;
-            z-index: 999;
             display: none;
         }
+
+        #inn {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+
         /* .sideMenu ul .nLi.on .sub {
         display: block;
     } */
     </style>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
     <div id="main">
         <h3>我的文件索引</h3>
         <ul id="mylist"></ul>
-        <div id="out">123</div>
+        <div id="out">
+            <div id="inn">
+                <div id="menu-icon"></div>
+                <div id="app">
+                </div>
+            </div>
+            <!-- <img src="./static/img/icon_txt.svg" alt=""> -->
+        </div>
+    </div>
     </div>
 </body>
 <script src="./newjs/ajax.js"></script>
+<script src="./newjs/marked.min.js"></script>
 <!-- <script src="./"></script> -->
 <script>
     function create(url, callback, key) {
@@ -160,23 +185,46 @@
             li = document.createElement('li')
             a = document.createElement('a')
             li.appendChild(a)
-            a.href = '#'+item1[i].path + item1[i].filename
+            a.href = '#' + item1[i].path + '/' + item1[i].filename
             a.innerText = item1[i].innerText
             ul.appendChild(li)
-            console.log(item1[i])
         }
     }
     function abc(e) {
         t = document.getElementById('ul' + e.slice(-1))
-        if(t.style.display=='none'){
+        if (t.style.display == 'none') {
             t.style = 'display:block;'
-        }else{
+        } else {
             t.style = 'display:none;'
         }
-        
+
     }
     create('./view/index.json', getlist, 'list')
+    hashold = null
+    out = document.getElementById('out')
+    function getmd(res) {
+        z = marked.parse(res);
+        out.style.display = 'block'
+        document.getElementById('app').innerHTML = z
+        cls = document.getElementById('menu-icon')
+        cls.addEventListener('click', function () {
+            out.style.display = 'none'
+            location.hash = ''
+        })
+    }
 
+    function hashchange() {
+        hash = location.hash
+        hash = decodeURI(hash)
+        console.log('路由变化', hashold, '=>', hash)
+        path = hash.replace(/^(#\/|#)/g, '')
+        console.log(path)
+        if (path) { create('./docs/' + path, getmd) }
+        // 根据路由加载相应md
+        hashold = hash
+    }
+    hashchange()
+    window.onhashchange = hashchange
 </script>
 
 </html>

@@ -1,61 +1,35 @@
-*{
-    padding: 0;
-    margin: 0;
-    background: #F5F5F5;
-}
-#main{
-    /* display: flex; */
-}
-#main div{
-    height: 100vh;
-    /* width: 100%; */
-}
-#lib{
-    width: 20%;
-    float: left;
-}
-#list{
-    background-color: aqua;
-    float: left;
-    width: 30%;
-}#app{
-    background-color: bisque;
-    float: left;
-    width: 50%;
-}
-#lib li{
-    list-style: none;
-    /* background-color: #efefef; */
-    margin: 5px auto;
-    height: 40px;
-    border:2px solid #efefef ;
-    border-radius: 10px;
-}
-/* #lib li a::before{
-    background: url("../static/img/icon_txt.svg") top left no-repeat;
-} */
-#lib li a{
-    line-height: 40px;
-    margin-left: 5px;
-    list-style: none;
-    display: block;
-    text-decoration: none;
-    color: #9C9C9C;
-}
-#lib li:hover{
-    background-color: antiquewhite;
-}
 
-#list ul{
-    list-style: none;
-    padding: 10px;
+#app{
+    width: 90%;
+    height: 90%;
+    padding: 25px 20px;
 }
-
-button{
-    position: fixed;
+#menu-icon {
+    z-index: 999;
+    position: absolute;
+    bottom: 2.6rem;
+    right: 20px;
+    width: 2rem;
+    height: .3rem;
+    padding: .3rem 0;
+    background-color: #069;
+    border-top: .3rem solid #069;
+    border-bottom: .3rem solid #069;
+    background-clip: content-box;
+}
+.is-win{
+    position:absolute;
+    top:0;
     right: 0;
-    bottom: 0;
+    z-index: 999;
 }
-h3{
-    font-size: 30px;
+
+
+.f15 {
+    font-size: 15px;
+    width: 15px;
+    padding-right: 5px;
+}
+svg{
+    width: 18px;
 }
