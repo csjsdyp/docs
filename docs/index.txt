@@ -1,0 +1,11 @@
+大类，路径，文件名，网页上的文件名
+英语,英语1,sts1-wjh.md，视听说1听力五句话
+英语,英语2,sts2-wjh.md，视听说2听力五句话
+英语,英语3,sts3-wjh.md，视听说3听力两段话
+英语,英语4,sts4-wjh.md，视听说4听力一段话
+英语,英语1,xsy1-hyy.md，新视野大学英语教程1汉译英翻译
+英语,英语2,xsy2-hyy.md，新视野大学英语教程2汉译英翻译
+英语,英语3,xsy3-hyy.md，新视野大学英语教程3汉译英翻译
+英语,英语4,xsy4-hyy.md，新视野大学英语教程4汉译英翻译
+英语,英语2，xsy2-wae.md，新视野大学英语教程2 Word in use and Expressions  in use
+英语,英语4，xsy4-wae.md，新视野大学英语教程4 Word in use and Expressions  in use
