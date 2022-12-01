@@ -1,15 +1,14 @@
-{
-    "type": "md",
-    "content": [
-        {
-            "path": "/1.md",
-            "name": "视听说1",
-            "filename": "listen2"
-        },
-        {
-            "path": "/1.md",
-            "name": "视听说1",
-            "filename": "listen2"
-        }
-    ]
-}
+[
+    {
+        "path": "/英语1",
+        "filename": "英语1的文件1.md",
+        "innerText": "英语1的文件1",
+        "time": ""
+    },
+    {
+        "path": "/英语2",
+        "filename": "英语2的文件1.md",
+        "innerText": "英语2的文件2"
+        
+    }
+]

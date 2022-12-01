@@ -40,25 +40,36 @@ String.prototype.format = function (args) {
     });
 };
 
-create('./view/lib.json', (res,xml) => {
+function lib(res,xml) {
     var arr = JSON.parse(res)
     type = arr.type
     content = arr.content
-    html = '<h3>csj的代码库</h3>\n<ul>'
-    for (i = 0; i < content.length; i++) {
+    html = '<h3><a href="./">csj的文件库</a></h3>\n<ul>'
+    for (let i = 0; i < content.length; i++) {
         item = content[i]
-        html += '<li><a href="{0}">{1}</a></li>'.format([item.path, item.name])
+        html += '<li><a id="{2}" href="{0}">{1}</a></li>'.format([item.path, item.name,item.filename])
+        let filename=eval('()=> create("./view/{0}{1}",list)'.format([item.filename,type]))
+        let rou={'path':item.path,'render':filename}
+        router.push(rou)
     }
     html += '</ul>'
     document.getElementById('lib').innerHTML = html
-})
-
-
-router.add([
-    // { path: '', render: () => create('./view/index.html',[],'app') },
-    // { path: '#/', render: () => create('./view/home.html',[],'app') },
-    { path: '#/home', render: () => create('./view/home.html',[],'app') },
-    { path: '#/code', render: () => create('./view/code.html',['./newjs/function.js'],'app') },
-    { path: '#/English', render: () => create('./view/English.json')}
-])
+}
+function list(res,xml){
+    var arr = JSON.parse(res)
+    path = arr.path
+    content = arr.content
+    html = '<ul>'
+    for (i = 0; i < content.length; i++) {
+        item = content[i]
+        html += '<li><a href="{0}{1}">{2}</a></li>'.format([path,item.path, item.name])
+    }
+    html += '</ul>'
+    document.getElementById('list').innerHTML = html
+}
+// create('./view/lib.json', lib)
+// router.add([
+//     { path: '', render: () =>create('./view/lib.json', lib)}
+// ])
+// console.log(router.routers)
 // router.listen()

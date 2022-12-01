@@ -6,6 +6,9 @@ class Router {
   add(e){
     this.routers=e
   }
+  push(route){
+    this.routers.push(route)
+  }
   listen() {
     // window.addEventListener('hashchange',()=>{return this.onHashChange})
     window.onhashchange = this.onHashChange
@@ -22,7 +25,7 @@ class Router {
         break
       }
     }
-    i == this.routers.length && this.routers[0].render()
+    // i == this.routers.length && this.routers[0].render()
     this.hashold = hash
   }
 }
