@@ -12,7 +12,10 @@ function create(url, callback, key) {
         })
     }
     function fail() {
-        alert('后台有误，获取数据失败')
+        h=location.hash
+        h=decodeURI(h)
+        h=h.replace(/^(#\/|#)/g, '')
+        alert('后台有误，获取'+h+'数据失败')
     }
   }
   function getlist(res) {
